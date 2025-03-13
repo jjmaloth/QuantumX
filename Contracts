@@ -1,1 +1,40 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+interface IFlashLoanProvider {
+    function flashLoan(address recipient, uint256 amount) external;
+}
+
+contract QuantumXFlashLoan {
+    address public owner;
+    IFlashLoanProvider public loanProvider;
+
+    constructor(address _loanProvider) {
+        owner = msg.sender;
+        loanProvider = IFlashLoanProvider(_loanProvider);
+    }
+
+    function executeFlashLoan(uint256 amount) external {
+        require(msg.sender == owner, "Only the owner can execute the flash loan");
+        loanProvider.flashLoan(address(this), amount);
+    }
+
+    // This function is called by the loan provider when the loan is received
+    function receiveFlashLoan(uint256 amount) external {
+        // Logic to perform arbitrage or liquidity optimization
+        // Ensure to repay the loan with interest or fees
+
+        // Example: Send the loan amount back with the interest
+        uint256 fee = amount / 100; // 1% fee for example
+        payable(address(loanProvider)).transfer(amount + fee);
+    }
+
+    // Withdraw contract balance
+    function withdraw() external {
+        require(msg.sender == owner, "Only the owner can withdraw");
+        payable(owner).transfer(address(this).balance);
+    }
+
+    receive() external payable {}
+}Flashloan.sol
 
