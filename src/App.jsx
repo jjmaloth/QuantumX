@@ -1,8 +1,7 @@
-
 import React, { useEffect, useState } from "react";
 import { WormholeConnect } from "@wormhole-foundation/wormhole-connect";
 import { useAccount, useConnect, useDisconnect } from "wagmi";
-import { InjectedConnector } from "wagmi/connectors/injected";
+import { InjectedConnector } from "wagmi";
 import { ethers } from "ethers";
 
 export default function App() {
@@ -47,7 +46,7 @@ export default function App() {
           config={{
             env: "mainnet",
             defaultSourceChain: "ethereum",
-            defaultTargetChain: "solana"
+            defaultTargetChain: "solana",
           }}
         />
       </div>
